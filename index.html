@@ -29,8 +29,8 @@
             --primary-hover: #4f46e5;
             --text-primary: #f9fafb;
             --text-secondary: #d1d5db;
-            --bg-primary: #111827;
-            --bg-secondary: #1f2937;
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
             --border-color: #374151;
         }
 
@@ -201,6 +201,8 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn i {
@@ -244,6 +246,13 @@
             overflow: hidden;
             display: grid;
             gap: 1rem;
+            animation: fadeIn 0.3s ease-out;
+            border: 1px solid var(--border-color);
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .task-card::before {
@@ -285,7 +294,9 @@
         .task-meta {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
             flex-wrap: wrap;
+            margin-top: 0.5rem;
         }
 
         .badge {
@@ -293,7 +304,9 @@
             border-radius: 1rem;
             font-size: 0.75rem;
             font-weight: 500;
+            letter-spacing: 0.025em;
             text-transform: capitalize;
+            box-shadow: var(--shadow-sm);
         }
 
         .badge-urgent { background: #ef4444; color: white; }
@@ -346,355 +359,191 @@
             }
         }
 
-        .task-card {
-            animation: slideIn 0.3s ease-out;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #666;
+        .shake {
+            animation: shake 0.5s ease-in-out;
         }
 
-        .empty-state h3 {
-            margin-bottom: 1rem;
-            font-size: 1.75rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-primary);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-        }
-
-        .stat-card:nth-child(1)::before { background: var(--primary-color); }
-        .stat-card:nth-child(2)::before { background: var(--success-color); }
-        .stat-card:nth-child(3)::before { background: var(--warning-color); }
-        .stat-card:nth-child(4)::before { background: var(--danger-color); }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .task-progress {
-            margin: 1rem 0;
-        }
-
-        .progress-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-bar-wrapper {
-            height: 8px;
-            background: var(--bg-secondary);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .task-progress-bar {
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-            transition: width 0.3s ease;
-        }
-
-        .progress-slider {
-            flex: 1;
-            height: 6px;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: var(--bg-secondary);
-            border-radius: 3px;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .progress-slider::-webkit-slider-thumb {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-            border: none;
-            transition: transform 0.1s;
-        }
-
-        .progress-slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-            border: none;
-            transition: transform 0.1s;
-        }
-
-        .progress-slider::-webkit-slider-thumb:hover,
-        .progress-slider::-moz-range-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .task-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .task-tag:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .task-tag i {
-            font-size: 0.625rem;
-        }
-
-        .task-reminder {
-            margin-left: 0.5rem;
-            color: var(--warning-color);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .task-title-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .task-time {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .badge-info {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .badge-warning {
-            background: var(--warning-color);
-            color: white;
-        }
-
-        .task-card.completed {
-            opacity: 0.75;
-        }
-
-        .task-card.completed .task-title {
-            text-decoration: line-through;
-        }
-
-        .task-card.overdue {
-            border-color: var(--danger-color);
-        }
-
-        .task-description a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .task-description a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .task-header {
-                flex-direction: column;
-                gap: 0.625rem;
-            }
-            
-            .task-actions {
-                justify-content: flex-start;
-            }
-        }
-
-        .error-message {
-            background: var(--danger-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--success-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            animation: slideInRight 0.3s ease-out;
-        }
-
-        .subtasks {
-            margin-top: 1rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 0.5rem;
-        }
-
-        .subtask {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .subtask:last-child {
-            border-bottom: none;
-        }
-
-        .subtask input[type="checkbox"] {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        .subtask span.completed {
-            text-decoration: line-through;
-            color: var(--text-secondary);
-        }
-
-        .task-notes {
-            margin-top: 1rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 0.5rem;
-        }
-
-        .note {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: var(--bg-primary);
-            border-radius: 0.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .note:last-child {
-            margin-bottom: 0;
-        }
-
-        .note i {
-            color: var(--warning-color);
-        }
-
-        .note small {
-            color: var(--text-secondary);
-            margin-left: auto;
-        }
-
-        .recurring-options {
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 0.5rem;
-        }
-
-        .form-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: var(--bg-secondary);
-            border-radius: 0.5rem;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .notification {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .task-tag {
+            transform: scale(1);
+            transition: transform 0.2s;
+        }
+
+        .task-tag:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-slider {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .progress-slider::-webkit-slider-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .progress-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .stats {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Dark theme improvements */
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --border-color: #374151;
+        }
+
+        /* Mobile responsiveness improvements */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
             }
-            to {
-                opacity: 1;
-                transform: translateX(0);
+
+            .header {
+                padding: 1.5rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .task-card {
+                padding: 1rem;
+            }
+        }
+
+        .shortcuts-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 4rem;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .shortcuts-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
+        }
+
+        .shortcuts-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .shortcuts-content {
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            max-width: 90%;
+            width: 400px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .shortcuts-content h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: var(--bg-secondary);
+        }
+
+        .shortcut-item kbd {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+            min-width: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .shortcut-item span {
+            margin-left: auto;
+            color: var(--text-secondary);
+        }
+
+        .close-dialog {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .shortcuts-content {
+                width: 90%;
+                margin: 1rem;
             }
         }
     </style>
@@ -853,6 +702,7 @@
                 this.currentTypeFilter = 'all';
                 this.searchQuery = '';
                 this.completedSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAUAAAbsAAGBgYGDQ0NDQ0UFBQUGxsbGxsiIiIiKSkpKSkwMDAwNzc3Nzc+Pj4+RUVFRU5OTk5OVVVVVVxcXFxcY2NjY2pqampqcXFxcXh4eHh4f39/f4aGhoaGjY2NjZSUlJSUnZ2dnZ2kpKSkq6urq6uyipbt');
+                this.errorSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAUAAAbsAAGBgYGDQ0NDQ0UFBQUGxsbGxsiIiIiKSkpKSkwMDAwNzc3Nzc+Pj4+RUVFRU5OTk5OVVVVVVxcXFxcY2NjY2pqampqcXFxcXh4eHh4f39/f4aGhoaGjY2NjZSUlJSUnZ2dnZ2kpKSkq6urq6uyipbt');
                 this.reminderTimes = [
                     { value: 5, unit: 'minutes' },
                     { value: 15, unit: 'minutes' },
@@ -874,6 +724,13 @@
                 this.setupRecurringTasksUI();
                 this.checkForOverdueTasks();
                 setInterval(() => this.checkForOverdueTasks(), 60000); // Check every minute
+                this.setupKeyboardShortcuts();
+                
+                // Check for recurring tasks every day
+                setInterval(() => this.updateRecurringTasks(), 24 * 60 * 60 * 1000);
+                
+                // Add keyboard shortcuts info to UI
+                this.addKeyboardShortcutsInfo();
             }
 
             setupRecurringTasksUI() {
@@ -905,73 +762,74 @@
                 }
             }
 
-            addTask() {
-                const title = document.getElementById('taskTitle').value.trim();
-                const type = document.getElementById('taskType').value;
-                const priority = document.getElementById('taskPriority').value;
-                const dueDate = document.getElementById('taskDueDate').value;
-                const description = document.getElementById('taskDescription').value.trim();
-                const tags = document.getElementById('taskTags').value
-                    .split(',')
-                    .map(tag => tag.trim())
-                    .filter(Boolean);
-                const reminder = document.getElementById('taskReminder').checked;
-                const recurring = document.getElementById('taskRecurring').checked;
+            addTask(e) {
+                e.preventDefault(); // Ensure form doesn't submit traditionally
 
-                if (!this.validateTaskInput(title, type, priority, dueDate)) {
-                    return;
+                try {
+                    const formData = this.getFormData();
+                    
+                    if (!this.validateTaskInput(formData)) {
+                        return;
+                    }
+
+                    const task = this.createTaskObject(formData);
+                    this.tasks.push(task);
+                    this.saveTasks();
+                    this.updateStats();
+                    this.renderTasks();
+                    this.resetForm();
+                    
+                    if (formData.reminder) {
+                        this.scheduleReminder(task);
+                    }
+
+                    this.showNotification('Success', 'Task added successfully!');
+                    this.completedSound.play().catch(e => console.log('Audio play failed:', e));
+                } catch (error) {
+                    console.error('Error adding task:', error);
+                    this.showError('Failed to add task. Please try again.');
+                    this.errorSound.play().catch(e => console.log('Audio play failed:', e));
                 }
-
-                const task = {
-                    id: Date.now(),
-                    title,
-                    type,
-                    priority,
-                    dueDate,
-                    description,
-                    tags,
-                    reminder,
-                    recurring,
-                    completed: false,
-                    created: new Date().toISOString(),
-                    progress: 0,
-                    subtasks: [],
-                    notes: []
-                };
-
-                this.tasks.push(task);
-                this.saveTasks();
-                this.updateStats();
-                this.renderTasks();
-                this.resetForm();
-                
-                if (reminder) {
-                    this.scheduleReminder(task);
-                }
-
-                this.showNotification('Success', 'Task added successfully!');
             }
 
-            validateTaskInput(title, type, priority, dueDate) {
-                if (title.length < 3) {
+            getFormData() {
+                return {
+                    title: document.getElementById('taskTitle').value.trim(),
+                    type: document.getElementById('taskType').value,
+                    priority: document.getElementById('taskPriority').value,
+                    dueDate: document.getElementById('taskDueDate').value,
+                    description: document.getElementById('taskDescription').value.trim(),
+                    tags: document.getElementById('taskTags').value
+                        .split(',')
+                        .map(tag => tag.trim())
+                        .filter(Boolean),
+                    reminder: document.getElementById('taskReminder').checked,
+                    recurring: document.getElementById('taskRecurring').checked
+                };
+            }
+
+            validateTaskInput(data) {
+                if (data.title.length < 3) {
                     this.showError('Title must be at least 3 characters long');
                     return false;
                 }
-                if (!type) {
+                if (!data.type) {
                     this.showError('Please select a task type');
                     return false;
                 }
-                if (!priority) {
+                if (!data.priority) {
                     this.showError('Please select a priority level');
                     return false;
                 }
-                if (!dueDate) {
+                if (!data.dueDate) {
                     this.showError('Please set a due date');
                     return false;
                 }
 
-                const selectedDate = new Date(dueDate);
-                if (selectedDate < new Date()) {
+                const selectedDate = new Date(data.dueDate);
+                const now = new Date();
+                
+                if (selectedDate < now) {
                     this.showError('Due date cannot be in the past');
                     return false;
                 }
@@ -979,21 +837,32 @@
                 return true;
             }
 
+            createTaskObject(data) {
+                return {
+                    id: Date.now(),
+                    ...data,
+                    completed: false,
+                    created: new Date().toISOString(),
+                    progress: 0,
+                    subtasks: [],
+                    notes: [],
+                    overdueNotified: false
+                };
+            }
+
             showError(message) {
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'error-message';
                 errorDiv.textContent = message;
-                errorDiv.style.cssText = `
-                    background: var(--danger-color);
-                    color: white;
-                    padding: 1rem;
-                    border-radius: 0.5rem;
-                    margin-bottom: 1rem;
-                    animation: slideIn 0.3s ease-out;
-                `;
                 
                 const form = document.getElementById('taskForm');
                 form.insertBefore(errorDiv, form.firstChild);
+                
+                this.errorSound.play().catch(e => console.log('Audio play failed:', e));
+                
+                // Add shake animation to the form
+                form.classList.add('shake');
+                setTimeout(() => form.classList.remove('shake'), 500);
                 
                 setTimeout(() => errorDiv.remove(), 3000);
             }
@@ -1389,30 +1258,54 @@
             }
 
             bindEvents() {
-                document.getElementById('taskForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.addTask();
-                });
+                const taskForm = document.getElementById('taskForm');
+                if (taskForm) {
+                    taskForm.addEventListener('submit', (e) => this.addTask(e));
+                }
 
-                document.getElementById('filterTasks').addEventListener('change', (e) => {
-                    this.currentFilter = e.target.value;
-                    this.renderTasks();
-                });
+                const filterTasks = document.getElementById('filterTasks');
+                if (filterTasks) {
+                    filterTasks.addEventListener('change', (e) => {
+                        this.currentFilter = e.target.value;
+                        this.renderTasks();
+                    });
+                }
 
-                document.getElementById('sortTasks').addEventListener('change', (e) => {
-                    this.currentSort = e.target.value;
-                    this.renderTasks();
-                });
+                const sortTasks = document.getElementById('sortTasks');
+                if (sortTasks) {
+                    sortTasks.addEventListener('change', (e) => {
+                        this.currentSort = e.target.value;
+                        this.renderTasks();
+                    });
+                }
 
-                document.getElementById('filterType').addEventListener('change', (e) => {
-                    this.currentTypeFilter = e.target.value;
-                    this.renderTasks();
-                });
+                const filterType = document.getElementById('filterType');
+                if (filterType) {
+                    filterType.addEventListener('change', (e) => {
+                        this.currentTypeFilter = e.target.value;
+                        this.renderTasks();
+                    });
+                }
 
-                document.getElementById('searchTasks').addEventListener('input', (e) => {
-                    this.searchQuery = e.target.value.toLowerCase();
-                    this.renderTasks();
-                });
+                const searchTasks = document.getElementById('searchTasks');
+                if (searchTasks) {
+                    searchTasks.addEventListener('input', (e) => {
+                        this.searchQuery = e.target.value.toLowerCase();
+                        this.renderTasks();
+                    });
+                }
+
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', () => {
+                        const html = document.documentElement;
+                        const currentTheme = html.getAttribute('data-theme');
+                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                        html.setAttribute('data-theme', newTheme);
+                        localStorage.setItem('theme', newTheme);
+                        this.updateThemeIcon();
+                    });
+                }
 
                 document.getElementById('themeToggle').addEventListener('click', () => {
                     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -1432,22 +1325,162 @@
 
             setupSearch() {
                 const searchInput = document.getElementById('searchTasks');
-                searchInput.addEventListener('input', () => {
-                    this.searchQuery = searchInput.value.toLowerCase();
+                const searchDebounce = this.debounce((value) => {
+                    this.searchQuery = value.toLowerCase();
                     this.renderTasks();
+                }, 300);
+
+                searchInput.addEventListener('input', (e) => searchDebounce(e.target.value));
+            }
+
+            debounce(func, wait) {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            }
+
+            filterByTag(tag) {
+                const searchInput = document.getElementById('searchTasks');
+                searchInput.value = tag;
+                this.searchQuery = tag.toLowerCase();
+                this.renderTasks();
+            }
+
+            updateTaskProgress(taskId, progress) {
+                const task = this.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.progress = parseInt(progress);
+                    if (task.progress >= 100) {
+                        task.completed = true;
+                        this.completedSound.play().catch(e => console.log('Audio play failed:', e));
+                    } else if (task.progress < 100) {
+                        task.completed = false;
+                    }
+                    this.saveTasks();
+                    this.updateStats();
+                    this.renderTasks();
+                }
+            }
+
+            formatDescription(description) {
+                // Convert URLs to clickable links
+                return description.replace(
+                    /(https?:\/\/[^\s]+)/g, 
+                    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+                );
+            }
+
+            toggleTheme() {
+                const html = document.documentElement;
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                this.updateThemeIcon();
+            }
+
+            updateThemeIcon() {
+                const themeIcon = document.querySelector('#themeToggle i');
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + / to focus search
+                    if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                        e.preventDefault();
+                        document.getElementById('searchTasks').focus();
+                    }
+                    
+                    // Ctrl/Cmd + N to focus new task form
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                        e.preventDefault();
+                        document.getElementById('taskTitle').focus();
+                    }
+                    
+                    // Escape to clear search
+                    if (e.key === 'Escape') {
+                        const searchInput = document.getElementById('searchTasks');
+                        if (document.activeElement === searchInput) {
+                            searchInput.value = '';
+                            this.searchQuery = '';
+                            this.renderTasks();
+                            searchInput.blur();
+                        }
+                    }
                 });
             }
 
-            setupNotifications() {
-                if ('Notification' in window) {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === 'granted') {
-                            console.log('Notification permission granted.');
-                        } else {
-                            console.log('Notification permission denied.');
+            updateRecurringTasks() {
+                const now = new Date();
+                this.tasks.forEach(task => {
+                    if (task.recurring && task.completed) {
+                        // Create next occurrence
+                        const nextTask = { ...task };
+                        nextTask.id = Date.now();
+                        nextTask.completed = false;
+                        nextTask.progress = 0;
+                        
+                        // Set next due date based on current due date
+                        const currentDue = new Date(task.dueDate);
+                        currentDue.setDate(currentDue.getDate() + 7); // Weekly recurrence
+                        nextTask.dueDate = currentDue.toISOString();
+                        
+                        this.tasks.push(nextTask);
+                        
+                        // Schedule reminder for new task if needed
+                        if (nextTask.reminder) {
+                            this.scheduleReminder(nextTask);
                         }
-                    });
-                }
+                    }
+                });
+                
+                this.saveTasks();
+                this.renderTasks();
+            }
+
+            addKeyboardShortcutsInfo() {
+                const header = document.querySelector('.header');
+                const shortcutsBtn = document.createElement('button');
+                shortcutsBtn.className = 'shortcuts-toggle';
+                shortcutsBtn.innerHTML = '<i class="fas fa-keyboard"></i>';
+                shortcutsBtn.title = 'Keyboard Shortcuts';
+                shortcutsBtn.onclick = this.showShortcutsDialog.bind(this);
+                header.appendChild(shortcutsBtn);
+            }
+
+            showShortcutsDialog() {
+                const dialog = document.createElement('div');
+                dialog.className = 'shortcuts-dialog';
+                dialog.innerHTML = `
+                    <div class="shortcuts-content">
+                        <h3>Keyboard Shortcuts</h3>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>/</kbd>
+                            <span>Focus search</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>N</kbd>
+                            <span>New task</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Esc</kbd>
+                            <span>Clear search</span>
+                        </div>
+                        <button class="btn btn-primary close-dialog">Close</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(dialog);
+                dialog.querySelector('.close-dialog').onclick = () => dialog.remove();
+                
+                // Close on click outside
+                dialog.onclick = (e) => {
+                    if (e.target === dialog) dialog.remove();
+                };
             }
         }
 
