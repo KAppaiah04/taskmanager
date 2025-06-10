@@ -1,62 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>Task Manager Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --border-color: #374151;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: var(--bg-primary);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-color);
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
         }
 
         .header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 300;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.1);
         }
 
         .main-content {
-            padding: 30px;
+            padding: 2rem;
         }
 
         .form-section {
             background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
             border-left: 5px solid #667eea;
+            box-shadow: var(--shadow-sm);
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group {
@@ -66,14 +130,14 @@
 
         label {
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
             color: #333;
         }
 
         input, select, textarea {
-            padding: 12px;
+            padding: 0.75rem;
             border: 2px solid #e1e5e9;
-            border-radius: 8px;
+            border-radius: 0.5rem;
             font-size: 14px;
             transition: border-color 0.3s;
         }
@@ -85,13 +149,13 @@
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 0.5rem;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -112,182 +176,180 @@
 
         .controls {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 1rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .controls select {
-            min-width: 150px;
+            min-width: 180px;
         }
 
         .tasks-container {
             display: grid;
-            gap: 15px;
+            gap: 1rem;
         }
 
         .task-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 5px solid #667eea;
-            transition: all 0.3s;
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 5px solid;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
+        }
+
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .task-card:hover::before {
+            transform: translateX(100%);
         }
 
         .task-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .task-card.completed {
-            opacity: 0.7;
-            border-left-color: #28a745;
+            opacity: 0.8;
+            border-left-color: var(--success-color);
         }
 
-        .task-card.completed .task-title {
-            text-decoration: line-through;
+        .task-progress {
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
         }
 
-        .task-header {
+        .task-progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .task-tags {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .task-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .task-description {
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .task-meta {
-            display: flex;
-            gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
         }
 
-        .task-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .task-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .priority-urgent {
-            background: #dc3545;
+        .task-tag:hover {
+            background: var(--primary-color);
             color: white;
         }
 
-        .priority-high {
-            background: #fd7e14;
-            color: white;
-        }
-
-        .priority-med {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .priority-low {
-            background: #28a745;
-            color: white;
-        }
-
-        .type-home { border-left-color: #17a2b8; }
-        .type-school { border-left-color: #6f42c1; }
-        .type-work { border-left-color: #dc3545; }
-        .type-project1 { border-left-color: #fd7e14; }
-        .type-project2 { border-left-color: #20c997; }
-
-        .task-actions {
+        .search-bar {
             display: flex;
-            gap: 10px;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
         }
 
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 12px;
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
-        .btn-success {
-            background: #28a745;
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .task-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .task-time i {
+            color: var(--primary-color);
+        }
+
+        .task-reminder {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem;
+            border-radius: 50%;
+            background: var(--warning-color);
             color: white;
+            font-size: 0.875rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn-danger {
-            background: #dc3545;
-            color: white;
+        .task-reminder:hover {
+            transform: scale(1.1);
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .due-date {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .due-date.overdue {
-            color: #dc3545;
-            font-weight: 600;
-        }
-
-        .due-date.due-soon {
-            color: #fd7e14;
-            font-weight: 600;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.9;
+        .task-card {
+            animation: slideIn 0.3s ease-out;
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 4rem 2rem;
             color: #666;
         }
 
         .empty-state h3 {
-            margin-bottom: 10px;
-            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
         }
 
         @media (max-width: 768px) {
@@ -302,7 +364,7 @@
             
             .task-header {
                 flex-direction: column;
-                gap: 10px;
+                gap: 0.625rem;
             }
             
             .task-actions {
@@ -314,11 +376,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Task Manager</h1>
+            <h1>Task Manager Pro</h1>
             <p>Stay organized and productive</p>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
         
         <div class="main-content">
+            <div class="search-bar">
+                <input type="text" id="searchTasks" class="search-input" placeholder="Search tasks...">
+            </div>
+
             <div class="stats" id="stats">
                 <div class="stat-card">
                     <div class="stat-number" id="totalTasks">0</div>
@@ -350,10 +419,12 @@
                             <label for="taskType">Type</label>
                             <select id="taskType" required>
                                 <option value="home">Home</option>
-                                <option value="school">School</option>
                                 <option value="work">Work</option>
-                                <option value="project1">Project 1</option>
-                                <option value="project2">Project 2</option>
+                                <option value="personal">Personal</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="finance">Finance</option>
+                                <option value="education">Education</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -366,13 +437,22 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="taskDueDate">Due Date</label>
-                            <input type="date" id="taskDueDate" required>
+                            <label for="taskDueDate">Due Date & Time</label>
+                            <input type="datetime-local" id="taskDueDate" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="taskDescription">Description</label>
                         <textarea id="taskDescription" placeholder="Optional task description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTags">Tags (comma separated)</label>
+                        <input type="text" id="taskTags" placeholder="e.g., important, meeting, report">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="taskReminder"> Set Reminder
+                        </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Task</button>
                 </form>
@@ -402,10 +482,12 @@
                     <select id="filterType">
                         <option value="all">All Types</option>
                         <option value="home">Home</option>
-                        <option value="school">School</option>
                         <option value="work">Work</option>
-                        <option value="project1">Project 1</option>
-                        <option value="project2">Project 2</option>
+                        <option value="personal">Personal</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="health">Health</option>
+                        <option value="finance">Finance</option>
+                        <option value="education">Education</option>
                     </select>
                 </div>
             </div>
@@ -426,6 +508,7 @@
                 this.currentFilter = 'all';
                 this.currentSort = 'dueDate';
                 this.currentTypeFilter = 'all';
+                this.searchQuery = '';
                 this.init();
             }
 
@@ -435,12 +518,29 @@
                 this.updateStats();
                 this.renderTasks();
                 this.setDefaultDate();
+                this.setupSearch();
+                this.setupNotifications();
+            }
+
+            setupSearch() {
+                const searchInput = document.getElementById('searchTasks');
+                searchInput.addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.renderTasks();
+                });
+            }
+
+            setupNotifications() {
+                if ('Notification' in window) {
+                    Notification.requestPermission();
+                }
             }
 
             setDefaultDate() {
-                const today = new Date();
-                today.setDate(today.getDate() + 1);
-                document.getElementById('taskDueDate').value = today.toISOString().split('T')[0];
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                now.setDate(now.getDate() + 1);
+                document.getElementById('taskDueDate').value = now.toISOString().slice(0, 16);
             }
 
             bindEvents() {
@@ -463,6 +563,19 @@
                     this.currentTypeFilter = e.target.value;
                     this.renderTasks();
                 });
+
+                document.getElementById('themeToggle').addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                });
+
+                // Restore theme
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
             }
 
             addTask() {
@@ -471,6 +584,8 @@
                 const priority = document.getElementById('taskPriority').value;
                 const dueDate = document.getElementById('taskDueDate').value;
                 const description = document.getElementById('taskDescription').value;
+                const tags = document.getElementById('taskTags').value.split(',').map(tag => tag.trim()).filter(Boolean);
+                const reminder = document.getElementById('taskReminder').checked;
 
                 const task = {
                     id: Date.now(),
@@ -479,8 +594,11 @@
                     priority,
                     dueDate,
                     description,
+                    tags,
+                    reminder,
                     completed: false,
-                    created: new Date().toISOString()
+                    created: new Date().toISOString(),
+                    progress: 0
                 };
 
                 this.tasks.push(task);
@@ -488,12 +606,42 @@
                 this.updateStats();
                 this.renderTasks();
                 this.resetForm();
+                this.scheduleReminder(task);
+            }
+
+            scheduleReminder(task) {
+                if (task.reminder) {
+                    const dueDate = new Date(task.dueDate);
+                    const now = new Date();
+                    const timeUntilDue = dueDate.getTime() - now.getTime();
+
+                    if (timeUntilDue > 0) {
+                        setTimeout(() => {
+                            if ('Notification' in window && Notification.permission === 'granted') {
+                                new Notification('Task Reminder', {
+                                    body: `Task "${task.title}" is due now!`,
+                                    icon: '/favicon.ico'
+                                });
+                            }
+                        }, timeUntilDue);
+                    }
+                }
+            }
+
+            updateTaskProgress(id, progress) {
+                const task = this.tasks.find(t => t.id === id);
+                if (task) {
+                    task.progress = Math.min(100, Math.max(0, progress));
+                    this.saveTasks();
+                    this.renderTasks();
+                }
             }
 
             toggleTask(id) {
                 const task = this.tasks.find(t => t.id === id);
                 if (task) {
                     task.completed = !task.completed;
+                    task.progress = task.completed ? 100 : 0;
                     this.saveTasks();
                     this.updateStats();
                     this.renderTasks();
@@ -507,24 +655,28 @@
                 this.renderTasks();
             }
 
-            resetForm() {
-                document.getElementById('taskForm').reset();
-                this.setDefaultDate();
+            editTask(id) {
+                const task = this.tasks.find(t => t.id === id);
+                if (task) {
+                    // Implement task editing UI here
+                    console.log('Edit task:', task);
+                }
             }
 
             saveTasks() {
-                // In a real environment, this would use localStorage:
-                // localStorage.setItem('tasks', JSON.stringify(this.tasks));
-                // For this demo, we'll just keep tasks in memory
+                localStorage.setItem('tasks', JSON.stringify(this.tasks));
             }
 
             loadTasks() {
-                // In a real environment, this would load from localStorage:
-                // const saved = localStorage.getItem('tasks');
-                // if (saved) {
-                //     this.tasks = JSON.parse(saved);
-                // }
-                // For this demo, we'll start with empty tasks
+                const saved = localStorage.getItem('tasks');
+                if (saved) {
+                    this.tasks = JSON.parse(saved);
+                    this.tasks.forEach(task => {
+                        if (task.reminder) {
+                            this.scheduleReminder(task);
+                        }
+                    });
+                }
             }
 
             updateStats() {
@@ -539,8 +691,22 @@
                 document.getElementById('overdueTasks').textContent = overdue;
             }
 
-            getFilteredTasks() {
+            resetForm() {
+                document.getElementById('taskForm').reset();
+                this.setDefaultDate();
+            }
+
+            getFilteredAndSearchedTasks() {
                 let filtered = [...this.tasks];
+
+                // Apply search
+                if (this.searchQuery) {
+                    filtered = filtered.filter(t => 
+                        t.title.toLowerCase().includes(this.searchQuery) ||
+                        t.description.toLowerCase().includes(this.searchQuery) ||
+                        t.tags.some(tag => tag.toLowerCase().includes(this.searchQuery))
+                    );
+                }
 
                 // Apply status filter
                 if (this.currentFilter === 'completed') {
@@ -579,7 +745,7 @@
 
             renderTasks() {
                 const container = document.getElementById('tasksContainer');
-                const filtered = this.getFilteredTasks();
+                const filtered = this.getFilteredAndSearchedTasks();
                 const sorted = this.getSortedTasks(filtered);
 
                 if (sorted.length === 0) {
@@ -597,44 +763,84 @@
 
             renderTask(task) {
                 const dueDate = new Date(task.dueDate);
-                const today = new Date();
-                const isOverdue = !task.completed && dueDate < today;
-                const isDueSoon = !task.completed && dueDate <= new Date(today.getTime() + 24 * 60 * 60 * 1000);
-
-                let dueDateClass = 'due-date';
-                if (isOverdue) dueDateClass += ' overdue';
-                else if (isDueSoon) dueDateClass += ' due-soon';
+                const now = new Date();
+                const isOverdue = !task.completed && dueDate < now;
+                const isDueSoon = !task.completed && dueDate <= new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
                 return `
-                    <div class="task-card ${task.completed ? 'completed' : ''} type-${task.type}">
+                    <div class="task-card ${task.completed ? 'completed' : ''} type-${task.type}" 
+                         style="border-left-color: ${this.getTypeColor(task.type)}">
                         <div class="task-header">
-                            <div>
-                                <div class="task-title">${task.title}</div>
-                                <div class="${dueDateClass}">
-                                    Due: ${dueDate.toLocaleDateString()}
-                                    ${isOverdue ? '(Overdue)' : isDueSoon ? '(Due Soon)' : ''}
+                            <div class="task-title-wrapper">
+                                <h3 class="task-title">
+                                    ${task.title}
+                                    ${task.reminder ? '<i class="fas fa-bell task-reminder"></i>' : ''}
+                                </h3>
+                                <div class="task-time">
+                                    <i class="far fa-clock"></i>
+                                    ${dueDate.toLocaleString()}
+                                    ${isOverdue ? '<span class="badge badge-danger">Overdue</span>' : 
+                                      isDueSoon ? '<span class="badge badge-warning">Due Soon</span>' : ''}
                                 </div>
                             </div>
                         </div>
-                        
-                        ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
-                        
-                        <div class="task-meta">
-                            <span class="task-badge priority-${task.priority}">${task.priority}</span>
-                            <span class="task-badge">${task.type}</span>
+
+                        ${task.description ? `
+                            <div class="task-description">
+                                ${task.description}
+                            </div>
+                        ` : ''}
+
+                        <div class="task-progress">
+                            <div class="task-progress-bar" style="width: ${task.progress}%"></div>
                         </div>
-                        
+
+                        <div class="task-tags">
+                            ${task.tags.map(tag => `
+                                <span class="task-tag">${tag}</span>
+                            `).join('')}
+                        </div>
+
+                        <div class="task-meta">
+                            <span class="badge badge-${task.priority}">${task.priority}</span>
+                            <span class="badge badge-${task.type}">${task.type}</span>
+                        </div>
+
                         <div class="task-actions">
-                            <button class="btn btn-small ${task.completed ? 'btn-secondary' : 'btn-success'}" 
+                            <input type="range" 
+                                   value="${task.progress}" 
+                                   min="0" 
+                                   max="100"
+                                   oninput="taskManager.updateTaskProgress(${task.id}, this.value)"
+                                   ${task.completed ? 'disabled' : ''}>
+                            <button class="btn btn-sm ${task.completed ? 'btn-secondary' : 'btn-success'}"
                                     onclick="taskManager.toggleTask(${task.id})">
-                                ${task.completed ? 'Undo' : 'Complete'}
+                                ${task.completed ? '<i class="fas fa-undo"></i>' : '<i class="fas fa-check"></i>'}
                             </button>
-                            <button class="btn btn-small btn-danger" onclick="taskManager.deleteTask(${task.id})">
-                                Delete
+                            <button class="btn btn-sm btn-primary"
+                                    onclick="taskManager.editTask(${task.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                                    onclick="taskManager.deleteTask(${task.id})">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 `;
+            }
+
+            getTypeColor(type) {
+                const colors = {
+                    home: '#4f46e5',
+                    work: '#ef4444',
+                    personal: '#10b981',
+                    shopping: '#f59e0b',
+                    health: '#ec4899',
+                    finance: '#6366f1',
+                    education: '#8b5cf6'
+                };
+                return colors[type] || '#4f46e5';
             }
         }
 
