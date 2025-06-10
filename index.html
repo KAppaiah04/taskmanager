@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .controls select {
+            min-width: 150px;
+        }
+
+        .tasks-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .task-card.completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+        }
+
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .task-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .task-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-urgent {
+            background: #dc3545;
+            color: white;
+        }
+
+        .priority-high {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .priority-med {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .type-home { border-left-color: #17a2b8; }
+        .type-school { border-left-color: #6f42c1; }
+        .type-work { border-left-color: #dc3545; }
+        .type-project1 { border-left-color: #fd7e14; }
+        .type-project2 { border-left-color: #20c997; }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .due-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .due-date.overdue {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .due-date.due-soon {
+            color: #fd7e14;
+            font-weight: 600;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .task-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .task-actions {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Task Manager</h1>
+            <p>Stay organized and productive</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingTasks">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="overdueTasks">0</div>
+                    <div class="stat-label">Overdue</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Add New Task</h2>
+                <form id="taskForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="taskTitle">Task Title</label>
+                            <input type="text" id="taskTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskType">Type</label>
+                            <select id="taskType" required>
+                                <option value="home">Home</option>
+                                <option value="school">School</option>
+                                <option value="work">Work</option>
+                                <option value="project1">Project 1</option>
+                                <option value="project2">Project 2</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority">Priority</label>
+                            <select id="taskPriority" required>
+                                <option value="low">Low</option>
+                                <option value="med">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDueDate">Due Date</label>
+                            <input type="date" id="taskDueDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription">Description</label>
+                        <textarea id="taskDescription" placeholder="Optional task description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+            </div>
+
+            <div class="controls">
+                <div class="form-group">
+                    <label for="filterTasks">Filter Tasks</label>
+                    <select id="filterTasks">
+                        <option value="all">All Tasks</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sortTasks">Sort By</label>
+                    <select id="sortTasks">
+                        <option value="dueDate">Due Date</option>
+                        <option value="priority">Priority</option>
+                        <option value="type">Type</option>
+                        <option value="created">Date Created</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterType">Filter by Type</label>
+                    <select id="filterType">
+                        <option value="all">All Types</option>
+                        <option value="home">Home</option>
+                        <option value="school">School</option>
+                        <option value="work">Work</option>
+                        <option value="project1">Project 1</option>
+                        <option value="project2">Project 2</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tasks-container" id="tasksContainer">
+                <div class="empty-state">
+                    <h3>No tasks yet</h3>
+                    <p>Add your first task to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TaskManager {
+            constructor() {
+                this.tasks = [];
+                this.currentFilter = 'all';
+                this.currentSort = 'dueDate';
+                this.currentTypeFilter = 'all';
+                this.init();
+            }
+
+            init() {
+                this.loadTasks();
+                this.bindEvents();
+                this.updateStats();
+                this.renderTasks();
+                this.setDefaultDate();
+            }
+
+            setDefaultDate() {
+                const today = new Date();
+                today.setDate(today.getDate() + 1);
+                document.getElementById('taskDueDate').value = today.toISOString().split('T')[0];
+            }
+
+            bindEvents() {
+                document.getElementById('taskForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addTask();
+                });
+
+                document.getElementById('filterTasks').addEventListener('change', (e) => {
+                    this.currentFilter = e.target.value;
+                    this.renderTasks();
+                });
+
+                document.getElementById('sortTasks').addEventListener('change', (e) => {
+                    this.currentSort = e.target.value;
+                    this.renderTasks();
+                });
+
+                document.getElementById('filterType').addEventListener('change', (e) => {
+                    this.currentTypeFilter = e.target.value;
+                    this.renderTasks();
+                });
+            }
+
+            addTask() {
+                const title = document.getElementById('taskTitle').value;
+                const type = document.getElementById('taskType').value;
+                const priority = document.getElementById('taskPriority').value;
+                const dueDate = document.getElementById('taskDueDate').value;
+                const description = document.getElementById('taskDescription').value;
+
+                const task = {
+                    id: Date.now(),
+                    title,
+                    type,
+                    priority,
+                    dueDate,
+                    description,
+                    completed: false,
+                    created: new Date().toISOString()
+                };
+
+                this.tasks.push(task);
+                this.saveTasks();
+                this.updateStats();
+                this.renderTasks();
+                this.resetForm();
+            }
+
+            toggleTask(id) {
+                const task = this.tasks.find(t => t.id === id);
+                if (task) {
+                    task.completed = !task.completed;
+                    this.saveTasks();
+                    this.updateStats();
+                    this.renderTasks();
+                }
+            }
+
+            deleteTask(id) {
+                this.tasks = this.tasks.filter(t => t.id !== id);
+                this.saveTasks();
+                this.updateStats();
+                this.renderTasks();
+            }
+
+            resetForm() {
+                document.getElementById('taskForm').reset();
+                this.setDefaultDate();
+            }
+
+            saveTasks() {
+                // In a real environment, this would use localStorage:
+                // localStorage.setItem('tasks', JSON.stringify(this.tasks));
+                // For this demo, we'll just keep tasks in memory
+            }
+
+            loadTasks() {
+                // In a real environment, this would load from localStorage:
+                // const saved = localStorage.getItem('tasks');
+                // if (saved) {
+                //     this.tasks = JSON.parse(saved);
+                // }
+                // For this demo, we'll start with empty tasks
+            }
+
+            updateStats() {
+                const total = this.tasks.length;
+                const completed = this.tasks.filter(t => t.completed).length;
+                const pending = total - completed;
+                const overdue = this.tasks.filter(t => !t.completed && new Date(t.dueDate) < new Date()).length;
+
+                document.getElementById('totalTasks').textContent = total;
+                document.getElementById('completedTasks').textContent = completed;
+                document.getElementById('pendingTasks').textContent = pending;
+                document.getElementById('overdueTasks').textContent = overdue;
+            }
+
+            getFilteredTasks() {
+                let filtered = [...this.tasks];
+
+                // Apply status filter
+                if (this.currentFilter === 'completed') {
+                    filtered = filtered.filter(t => t.completed);
+                } else if (this.currentFilter === 'pending') {
+                    filtered = filtered.filter(t => !t.completed);
+                } else if (this.currentFilter === 'overdue') {
+                    filtered = filtered.filter(t => !t.completed && new Date(t.dueDate) < new Date());
+                }
+
+                // Apply type filter
+                if (this.currentTypeFilter !== 'all') {
+                    filtered = filtered.filter(t => t.type === this.currentTypeFilter);
+                }
+
+                return filtered;
+            }
+
+            getSortedTasks(tasks) {
+                const priorityOrder = { urgent: 4, high: 3, med: 2, low: 1 };
+
+                return tasks.sort((a, b) => {
+                    switch (this.currentSort) {
+                        case 'priority':
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                        case 'type':
+                            return a.type.localeCompare(b.type);
+                        case 'created':
+                            return new Date(b.created) - new Date(a.created);
+                        case 'dueDate':
+                        default:
+                            return new Date(a.dueDate) - new Date(b.dueDate);
+                    }
+                });
+            }
+
+            renderTasks() {
+                const container = document.getElementById('tasksContainer');
+                const filtered = this.getFilteredTasks();
+                const sorted = this.getSortedTasks(filtered);
+
+                if (sorted.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No tasks found</h3>
+                            <p>Try adjusting your filters or add a new task!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = sorted.map(task => this.renderTask(task)).join('');
+            }
+
+            renderTask(task) {
+                const dueDate = new Date(task.dueDate);
+                const today = new Date();
+                const isOverdue = !task.completed && dueDate < today;
+                const isDueSoon = !task.completed && dueDate <= new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+                let dueDateClass = 'due-date';
+                if (isOverdue) dueDateClass += ' overdue';
+                else if (isDueSoon) dueDateClass += ' due-soon';
+
+                return `
+                    <div class="task-card ${task.completed ? 'completed' : ''} type-${task.type}">
+                        <div class="task-header">
+                            <div>
+                                <div class="task-title">${task.title}</div>
+                                <div class="${dueDateClass}">
+                                    Due: ${dueDate.toLocaleDateString()}
+                                    ${isOverdue ? '(Overdue)' : isDueSoon ? '(Due Soon)' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                        
+                        <div class="task-meta">
+                            <span class="task-badge priority-${task.priority}">${task.priority}</span>
+                            <span class="task-badge">${task.type}</span>
+                        </div>
+                        
+                        <div class="task-actions">
+                            <button class="btn btn-small ${task.completed ? 'btn-secondary' : 'btn-success'}" 
+                                    onclick="taskManager.toggleTask(${task.id})">
+                                ${task.completed ? 'Undo' : 'Complete'}
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="taskManager.deleteTask(${task.id})">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize the task manager
+        const taskManager = new TaskManager();
+    </script>
+</body>
+</html>
